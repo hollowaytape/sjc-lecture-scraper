@@ -8,8 +8,6 @@ class PodcastRSS(PyRSS2Gen.RSS2):
 
 class PodcastItem(PyRSS2Gen.RSSItem):
     # Need to subclass RssItem to add the duration field.
-    #element_attrs = {'duration': 'duration'} # ???
-    #rss_attrs = {'xlmns:itunes': "http://www.itunes.com/dtds/podcast-1.0.dtd"}
     element_attrs = {}
 
     def __init__(
@@ -57,7 +55,7 @@ with jsonlines.open('items.jl') as reader:
         item = PodcastItem(
                 title=obj['title'],
                 link=obj['audio_link'],
-                description=obj['subject'] + " delivered by " + obj['author'],
+                description="%s. %s %s." % (obj['subject'], obj['description'], obj['location']),
                 guid=obj['id'],
                 pubDate=obj['date'],
                 duration=obj['duration'],
@@ -71,7 +69,7 @@ rss = PodcastRSS(
 
     lastBuildDate=datetime.datetime.now(),
 
-    image = PyRSS2Gen.Image(
+    image=PyRSS2Gen.Image(
             url='https://diplomaclassics.com/images/Entities/insignia/v2/SjcaSealOrangeGold_220.png',
             title='SJC Logo',
             link='https://diplomaclassics.com/images/Entities/insignia/v2/SjcaSealOrangeGold_220.png',

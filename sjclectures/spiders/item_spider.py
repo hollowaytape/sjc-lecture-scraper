@@ -29,6 +29,7 @@ class ItemSpider(scrapy.Spider):
             'date': extract_with_css('div#dublin-core-date div.element-text::text'),
             'location': extract_with_css('div#dublin-core-coverage div.element-text::text'),
             'subject':  extract_with_css('div#dublin-core-subject div.element-text a::text'),
+            'description': extract_with_css('div#dublin-core-description div.element-text::text'),
             'audio_link': extract_with_css('audio#html5-media-1::attr(src)'),
             'duration': extract_with_css('div#sound-item-type-metadata-duration div.element-text::text'),
         }
