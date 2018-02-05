@@ -39,7 +39,10 @@ class PodcastItem(PyRSS2Gen.RSSItem):
         self.guid = guid
         self.pubDate = pubDate
         self.source = source
-        self.duration = duration
+        if duration:
+            self.duration = duration[0]
+        else:
+            self.duration = "1:00:00"
 
     def publish_extensions(self, handler):
         PyRSS2Gen._opt_element(handler, "itunes:duration", self.duration)

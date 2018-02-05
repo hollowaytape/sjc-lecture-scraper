@@ -61,7 +61,7 @@ def main():
 
     file_metadata = {'name': 'lecturefeed.rss'}
     media = MediaFileUpload('lecturefeed.rss', mimetype='application/rss+xml')
-    file = service.files().update(fileId='1NHjvz7CQKbVjA4U3M6yaCd94Pe25Umon', body=file_metadata, media_body=media, fields='id').execute()
+    file = service.files().update(fileId='1vLxzJ5vKNODZ5_uN4XRkaN2-u2CgTfiV', body=file_metadata, media_body=media, fields='id').execute()
     #print("File ID: %s" % file.get('id'))
     print("Link to RSS feed: https://drive.google.com/uc?export=download&id=%s" % file.get('id'))
 
