@@ -6,4 +6,5 @@ Scrapes lectures from a digital archive and generates an RSS feed from them.
 scrapy crawl -o items.jl items
 python write_rss.py
 python clean_rss.py
-python upload_rss.py```
+python upload_rss.py
+```

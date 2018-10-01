@@ -2,6 +2,22 @@ import jsonlines
 import PyRSS2Gen
 import datetime
 
+special_chars = {
+    b'\xc3\xa8': b'e',   # e grave
+    b'\xc3\xa9': b'e',   # e acute
+    b'\xc3\xa4': b'a',   # a umlaut
+    b'\xc3\xb6': b'o',    # o umlaut
+    b'\xc3\xb8': b'o',   # o umlaut
+    b'\xc3\xa6': b'ae',  # ae
+    b'\xc4\x81': b'a',   # a bar
+    b'\xc5\xab': b'u',   # u bar
+    b'\xe1\xb8': b'h',   # h with a thing on the bottom
+    b'\xa5\x60': b'a',   # a bar
+    b'\xc4\xab': b'i',   # i bar
+
+
+}
+
 class PodcastRSS(PyRSS2Gen.RSS2):
     rss_attrs = {'xmlns:itunes': "http://www.itunes.com/dtds/podcast-1.0.dtd",
                  'version': '2.0'}
@@ -55,10 +71,26 @@ with jsonlines.open('items.jl') as reader:
         #        url=obj['audio_link'],
         #        length=
         #    )
+        if obj['subject']:
+            try:
+                print(obj['subject'])
+            except UnicodeEncodeError:
+                obj['subject'] = bytes(obj['subject'], encoding='utf-8')
+
+                for c in special_chars:
+                    obj['subject'] = obj['subject'].replace(c, special_chars[c])
+                    #print(obj['subject'])
+
+                obj['subject'] = obj['subject'].decode('shift-jis')
+                print(obj['subject'])
+            description_string = "%s. %s %s." % (obj['subject'], obj['description'], obj['location'])
+        else:
+            #print("No subject")
+            description_string = "%s %s." % (obj['description'], obj['location'])
         item = PodcastItem(
                 title=obj['title'],
                 link=obj['audio_link'],
-                description="%s. %s %s." % (obj['subject'], obj['description'], obj['location']),
+                description=description_string,
                 guid=obj['id'],
                 pubDate=obj['date'],
                 duration=obj['duration'],
